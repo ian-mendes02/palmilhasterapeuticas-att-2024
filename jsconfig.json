@@ -1,7 +1,15 @@
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"]
-    }
-  }
+      "@/*": ["./src/*"],
+      "$/*": ["./public/*"]
+    },
+    "esModuleInterop": true,
+  },
+  "exclude": [
+    "./node_modules",
+    "./archive",
+    "./dist",
+    "./public"
+  ]
 }
