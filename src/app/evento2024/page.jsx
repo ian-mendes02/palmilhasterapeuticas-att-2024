@@ -66,8 +66,13 @@ export default function Main() {
         };
     }, [modalActive]);
 
-    const VideoEvento = useMemo(
-        () => <iframe src='https://www.youtube.com/embed/4Q2rD4ZH31M?si=DcurTOerXO3Rtc8o&autoplay=1&rel=0' allow='autoplay; picture-in-picture; web-share' allowFullScreen className='outline-none aspect-video w-full max-[820px]:!w-screen rounded-lg relative z-50'></iframe>, []
+    const VideoEvento = (
+        <iframe
+        className='outline-none aspect-video w-full max-[820px]:!w-screen rounded-lg relative z-50'
+            src="https://www.youtube.com/embed/ELc7U9NgONY" 
+            allow='autoplay;picture-in-picture;web-share'
+            allowFullScreen
+        ></iframe>
     );
 
     const Fullscreen = () => (
@@ -84,17 +89,6 @@ export default function Main() {
         </div>
     );
 
-    const Vantagem = ({children, icon}) => (
-        <Container className='w-full h-36 rounded-3xl p-4 shadow-md bg-[var(--cor-4)] border-t-2 border-sky-900'>
-            <Container className='items-center justify-start text-center'>
-                <div className='flex justify-center items-center bg-[var(--cor-1)] rounded-full w-12 h-12'>
-                    <i className={icon} style={{fontSize: '1.5rem'}} aria-hidden="true"></i>
-                </div>
-                <div className="mt-4">{children}</div>
-            </Container>
-        </Container>
-    );
-
     const Palestrante = ({
         children = defaultText,
         src = defaultUserProfile,
@@ -102,29 +96,10 @@ export default function Main() {
         occupation = defaultOccupation,
         theme = 'Tema da palestra'
     }) => {
-        const [isActive, setIsActive] = useState(false);
-        const [maxHeight, setMaxHeight] = useState(96);
-        const containerRef = useRef(null);
-        const padding = 16;
-
-        useEffect(() => {
-            var content = containerRef.current.children;
-            var titleHeight = content[0].clientHeight;
-            var descriptionHeight = content[1].clientHeight;
-            var totalHeight = titleHeight + descriptionHeight + padding;
-            isActive
-                ? setMaxHeight(totalHeight)
-                : setMaxHeight(titleHeight + padding);
-        }, [isActive]);
-
         return (
             <div className='w-full flex items-start justify-center'>
-                <div
-                    className='p-2 rounded-2xl shadow-md bg-[#121e31] border-t-2 border-sky-900 hover:scale-[101%] hover:brightness-95 duration-200 ease-out w-full h-full overflow-hidden cursor-pointer'
-                    onClick={() => setIsActive(!isActive)}
-                    style={{height: maxHeight}}
-                >
-                    <div className="flex flex-col justify-between relative duration-300 ease-out" ref={containerRef}>
+                <div className='p-2 rounded-2xl shadow-md bg-[#121e31] border-t-2 border-sky-900 w-full h-full'>
+                    <div className="flex flex-col justify-between relative duration-300 ease-out">
                         <div className='speaker-header w-full flex items-center justify-start p-2 max-[820px]:!p-0'>
                             <div
                                 className='speaker-profile w-24 min-w-24 aspect-square left-0 bottom-0 rounded-full mr-4 bg-center bg-cover'
@@ -145,30 +120,6 @@ export default function Main() {
             </div>
         );
     };
-
-    const Atividade = ({children, img, name, description, link}) => (
-        <div className='m-2 w-96 text-white'>
-            <div className='p-4 rounded-xl shadow-md bg-[linear-gradient(60deg,var(--cor-4),var(--cor-5))] w-full h-full border-b-8 border-t border-b-[#0e1b2c] border-t-cyan-200'>
-                <div className="flex flex-col justify-between">
-                    <div className='atividade-header w-full flex items-center justify-start'>
-                        <div className='atividade-profile w-24 h-24 aspect-square mr-4'>
-                            <img src={img} className='w-full h-full aspect-square rounded-lg' width={200} height={200} alt='' draggable='false' />
-                        </div>
-                        <div className='atividade-title'>
-                            <h2 className='font-semibold text-xl'>{name}</h2>
-                            <h3 className='italic opacity-80'>{description}</h3>
-                        </div>
-                    </div>
-                    <Container className='justify-between h-full'>
-                        <div className="divider left"></div>
-                        {children}
-                        <br />
-                        {link && <a href={link} target='_blank' className='text-white !underline cursor-pointer'> Saiba mais <i className="fa-solid fa-arrow-up-right-from-square text-xs" aria-hidden="true"></i></a>}
-                    </Container>
-                </div>
-            </div>
-        </div>
-    );
 
     const Checkout = () => (
         <div
@@ -193,7 +144,7 @@ export default function Main() {
                 </div>
             )}
 
-            <Countdown isMobile={isMobile}/>
+            <Countdown isMobile={isMobile} />
 
             <Section id='evt-header' className='pt-48 pb-12 flex items-center overflow-hidden bg-[var(--cor-4)]'>
 
@@ -211,7 +162,7 @@ export default function Main() {
                             </Container>
                             <div className="divider"></div>
                             <Container className='my-4'>
-                                <p className='text-3xl'>Viva a experiência do empreendedorismo e da prática baseada em evidência para se destacar no mercado de trabalho.</p>
+                                <p className='text-3xl'>DOMINE TÉCNICAS E APRIMORE O SEU RACIOCÍNIO CLÍNICO SOBRE PALMILHAS TERAPÊUTICAS.</p>
                             </Container>
                             <Wrapper className='flex-nowrap max-[820px]:!flex-col'>
                                 <Wrapper className="items-center flex-nowrap w-max m-2">
@@ -237,67 +188,6 @@ export default function Main() {
                 </Content>
             </Section>
 
-            <Section id="evt-vantagens" className='border-t-2 border-sky-800 bg-[#121e31] py-4'>
-                <Content>
-                    <ContentDefault>
-                        <Grid className='grid-rows-1 grid-cols-4 max-[820px]:!grid-rows-4 max-[820px]:!grid-cols-1 gap-4'>
-                            <Vantagem icon='fa-regular fa-clock'>
-                                <p className='text-sm'><strong className='grad-text'>19 horas</strong> de atividades e palestras</p>
-                            </Vantagem>
-
-                            <Vantagem icon='fa-solid fa-users'>
-                                <p className='text-sm'><strong className='grad-text'>Networking</strong> com clínicos de todo o país</p>
-                            </Vantagem>
-
-                            <Vantagem icon='fa-solid fa-rocket'>
-                                <p className='text-sm'>Conteúdo para <strong className='grad-text'>todos os níveis de experiência</strong></p>
-                            </Vantagem>
-
-                            <Vantagem icon='fa-solid fa-user-graduate'>
-                                <p className='text-sm'>Palestras e mentorias com <strong className='grad-text'>grandes profissionais do mercado</strong></p>
-                            </Vantagem>
-                        </Grid>
-                    </ContentDefault>
-                </Content>
-            </Section>
-
-            <Section id="evt-prof" className='bg-[radial-gradient(circle_at_center,#1E3050,#121e31)] border-t-2 border-sky-800 z-20 shadow-lg'>
-                <Content>
-                    <ContentDefault>
-                        <Container className="text-center mx-auto w-9/12 max-[820px]:!w-full mb-8">
-                            <h1 className='font-bold text-3xl grad-text mb-2 max-[820px]:!text-2xl'>A PROFISSIONALIZAÇÃO É O ÚNICO CAMINHO</h1>
-                            <h2 className='mx-auto w-9/12 max-[820px]:!w-full text-base font-light'>Não importa o seu tempo de mercado: o <mark className="cor-7">Encontro Anual Palmilhas e Ciência Aplicada</mark> é o lugar perfeito para você ter ainda mais resultados.</h2>
-                        </Container>
-                        <Wrapper className='flex-nowrap max-[820px]:!flex-col items-center justify-center'>
-                            <Container className='w-96 min-h-40 m-2 p-4 rounded-3xl shadow-md bg-[#121e31] border-t-2 border-sky-900 max-[820px]:!w-[96%]'>
-                                <span className='flex w-full justify-between items-center font-bold grad-text text-lg'>
-                                    <h2>Se é iniciante</h2>
-                                    <i className="fa-solid fa-seedling text-3xl grad-text" aria-hidden="true"></i>
-                                </span>
-                                <div className="divider left"></div>
-                                <p>Vai descobrir como ser um profissional acima da média desde o início da jornada</p>
-                            </Container>
-                            <Container className='w-96 min-h-40 m-2 p-4 rounded-3xl shadow-md bg-[#121e31] border-t-2 border-sky-900 max-[820px]:!w-[96%]'>
-                                <span className='flex w-full justify-between items-center font-bold grad-text text-lg'>
-                                    <h2>Se já tem experiência</h2>
-                                    <i className="fa-solid fa-gears text-3xl grad-text" aria-hidden="true"></i>
-                                </span>
-                                <div className="divider left"></div>
-                                <p>Vai conhecer novas formas de melhorar ainda mais seu trabalho e poder cobrar mais pelo seu serviço</p>
-                            </Container>
-                            <Container className='w-96 min-h-40 m-2 p-4 rounded-3xl shadow-md bg-[#121e31] border-t-2 border-sky-900 max-[820px]:!w-[96%]'>
-                                <span className='flex w-full justify-between items-center font-bold grad-text text-lg'>
-                                    <h2>Se já é avançado</h2>
-                                    <i className="fa-solid fa-rocket text-3xl grad-text" aria-hidden="true"></i>
-                                </span>
-                                <div className="divider left"></div>
-                                <p>Vai aumentar o seu networking, fazer parcerias e ter contato com grandes profissionais do país.</p>
-                            </Container>
-                        </Wrapper>
-                    </ContentDefault>
-                </Content>
-            </Section>
-
             <Section id='evt-local' className='max-[820px]:!py-16 bg-[linear-gradient(45deg,var(--cor-4),var(--cor-5))] duration-200 ease-out overflow-hidden'>
                 <Content className='relative z-20'>
                     <ContentDefault>
@@ -316,7 +206,7 @@ export default function Main() {
                                     <h2 className='font-extralight text-base'>
                                         {isMobile && <i className="fa-solid fa-calendar-days mr-2" aria-hidden="true"></i>}
                                         <strong>13 e 14 de Setembro</strong><br />
-                                        Sexta-feira e sábado<br/>
+                                        Sexta-feira e sábado<br />
                                         Das 8h às 18h
                                     </h2>
                                 </Wrapper>
@@ -352,7 +242,7 @@ export default function Main() {
                                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14668.122128172752!2d-45.90516370000002!3d-23.205557899999988!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cc3589bc020f0d%3A0x96bc968352c2c899!2sMercure%20Sao%20Jose%20dos%20Campos!5e0!3m2!1sen!2sbr!4v1710790411443!5m2!1sen!2sbr" className='outline-none border-none w-full h-full absolute rounded-lg' allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
                             </Container>
                         </Wrapper>
-                        <Checkout/>
+                        <Checkout />
                     </ContentDefault>
                 </Content>
             </Section>
@@ -362,13 +252,12 @@ export default function Main() {
                     <ContentDefault>
                         <Container className='w-9/12 max-[820px]:!w-full my-4 px-4 mx-auto'>
                             <h2 className='text-2xl text-center max-[820px]:!text-xl font-bold grad-text mb-2'>CONHEÇA OS PALESTRANTES DE 2024</h2>
-                            <p className='text-center text-sm'>Selecione um palestrante para ver mais informações</p>
                             <div className="divider"></div>
                         </Container>
                         <Container className='items-center justify-center'>
 
                             <Container className='mt-4 items-center'>
-                                <h2 className='grad-text text-center font-semibold text-lg'>Ciência Aplicada</h2>
+                                <h2 className='grad-text text-center font-semibold text-2xl'>Ciência Aplicada</h2>
                                 <Grid className='mt-4 mx-auto grid-cols-2 max-[820px]:!grid-cols-1 w-full gap-4'>
                                     <Palestrante
                                         src={ASSET_PREFIX + 'img/palestrantes-2024/andre-mendes.webp'}
@@ -422,7 +311,7 @@ export default function Main() {
                             </Container>
 
                             <Container className='mt-8'>
-                                <h2 className='grad-text text-center font-semibold text-lg'>Empreendedorismo</h2>
+                                <h2 className='grad-text text-center font-semibold text-2xl'>Empreendedorismo</h2>
                                 <Grid className='mt-4 mx-auto grid-cols-2 max-[820px]:!grid-cols-1 w-full gap-4'>
                                     <Palestrante
                                         src={ASSET_PREFIX + 'img/palestrantes-2024/mariana-pereira.webp'}
@@ -474,7 +363,7 @@ export default function Main() {
 
             <Section id='evt-video' className='shadow-xl !py-0'>
                 <div className='my-8'>
-                    <h1 className='grad-text text-center font-semibold text-lg'>Confira como foi nosso último encontro</h1>
+                    <h1 className='grad-text text-center font-semibold text-3xl'>Confira como foi nosso último encontro</h1>
                 </div>
                 <div className='relative pt-24 h-[576px] max-[820px]:!h-[90vh] flex items-center overflow-hidden'>
                     <div className='cursor-pointer' onClick={() => toggleFullscreen(VideoEvento)}>
@@ -495,106 +384,6 @@ export default function Main() {
                 <Content>
                     <ContentDefault>
                         <EventoIngressos />
-                    </ContentDefault>
-                </Content>
-            </Section>
-
-            <Section id='evt-como-chegar' className='border-y-2 border-sky-800 bg-[#121e31]'>
-                <Content>
-                    <ContentDefault>
-                        <Container className='my-4'>
-                            <h1 className='grad-text font-semibold text-lg'>Como chegar até o local do evento?</h1>
-                            <p className='text-xs opacity-50 italic my-4  max-[820px]:!text-center'>Tempos aproximados e sujeitos a variação.</p>
-                            <div className="divider left max-[820px]:!hidden"></div>
-                            <div className="divider min-[821px]:hidden"></div>
-                        </Container>
-                        <Grid className='grid-cols-2 max-[820px]:!grid-cols-1'>
-                            <List className='checklist ml-8'>
-                                <li className='include text-lg font-semibold'> - Aeroporto de São José dos Campos <br />
-                                    <span className="inline-flex items-center mt-2">
-                                        <span className='font-bold text-center m-2 border border-sky-500 rounded-xl p-2 w-24 h-fit'><i aria-hidden="true" className="fa-solid fa-car"></i><br />20min</span>
-                                    </span>
-                                </li>
-                                <li className='include text-lg font-semibold'> - Aeroporto de Guarulhos <br />
-                                    <span className="inline-flex items-center mt-2">
-                                        <span className='font-bold text-center m-2 border border-sky-500 rounded-xl p-2 w-24 h-fit'><i aria-hidden="true" className="fa-solid fa-car"></i><br />1h</span>
-                                        <span className='font-bold text-center m-2 border border-sky-500 rounded-xl p-2 w-24 h-fit'><i aria-hidden="true" className="fa-solid fa-bus"></i><br />1h15min</span>
-                                    </span>
-                                </li>
-                                <li className='include text-lg font-semibold'> - Rodoviária de São José dos Campos <br />
-                                    <span className="inline-flex items-center mt-2">
-                                        <span className='font-bold text-center m-2 border border-sky-500 rounded-xl p-2 w-24 h-fit'><i aria-hidden="true" className="fa-solid fa-car"></i><br />10min</span>
-                                        <span className='font-bold text-center m-2 border border-sky-500 rounded-xl p-2 w-24 h-fit'><i aria-hidden="true" className="fa-solid fa-bus"></i><br />30min</span>
-                                    </span>
-                                </li>
-                                <li className='include text-lg font-semibold'> - Acesso pela via Dutra</li>
-                            </List>
-                            <Container className='w-full aspect-video max-[820px]:!p-0 relative my-auto max-[820px]:!mt-8'>
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14668.122128172752!2d-45.90516370000002!3d-23.205557899999988!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cc3589bc020f0d%3A0x96bc968352c2c899!2sMercure%20Sao%20Jose%20dos%20Campos!5e0!3m2!1sen!2sbr!4v1710790411443!5m2!1sen!2sbr" className='outline-none border-none w-full h-full absolute rounded-lg' allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
-                            </Container>
-                        </Grid>
-                        <Checkout/>
-                    </ContentDefault>
-                </Content>
-            </Section>
-
-            <Section id='evt-o-que-fazer'>
-                <Content className='relative z-30'>
-                    <ContentDefault>
-                        <Container>
-                            <h1 className='grad-text font-semibold text-lg text-center'>O que fazer na região?</h1>
-                            <div className="divider"></div>
-                        </Container>
-                        <Wrapper className='items-center justify-center'>
-                            <Atividade
-                                img={ASSET_PREFIX + 'img/atividades/thermas-do-vale.webp'}
-                                name='THERMAS DO VALE'
-                                description='Parque aquático'
-                                link='https://www.thermasdovale.com.br/'>
-                                <p className='text-sm italic min-h-36'>"O Thermas do Vale está localizado a 90km de São Paulo - SP. O lindo Parque Aquático conta com 13 piscinas e diversas atrações em um espaço repleto de natureza preservada."</p>
-                            </Atividade>
-
-                            <Atividade
-                                img={ASSET_PREFIX + 'img/atividades/vicentina-aranha.webp'}
-                                name='PARQUE VICENTINA ARANHA'
-                                description='Parque municipal'
-                                link='https://www.sjc.sp.gov.br/servicos/esporte-e-qualidade-de-vida/parques/vicentina-aranha/'>
-                                <p className="text-sm italic min-h-36">"O Parque Vicentina Aranha abrange uma área de 80 mil metros quadrados. O espaço foi aberto para a prática de caminhada em um extenso bosque. O parque é separado em canteiros com paisagismo e canteiros com bosque e algumas espécies raras e centenárias."</p>
-                            </Atividade>
-
-                            <Atividade
-                                img={ASSET_PREFIX + 'img/atividades/parque-da-cidade.webp'}
-                                name='PARQUE DA CIDADE'
-                                description='Parque municipal'
-                                link='https://www.sjc.sp.gov.br/servicos/esporte-e-qualidade-de-vida/parques/parque-da-cidade/'>
-                                <p className='text-sm italic min-h-36'>"O Parque Municipal Roberto Burle Marx, mais conhecido como "Parque da Cidade", ocupa uma área de cerca de um milhão de metros quadrados. Este vasto perímetro abriga jardins, palmeiras imperiais, lagos, ilhas artificiais, bosques e alamedas."</p>
-                            </Atividade>
-
-                            <Atividade
-                                img={ASSET_PREFIX + 'img/atividades/santo-antonio-do-pinhal.webp'}
-                                name='SANTO ANTÔNIO DO PINHAL'
-                                description='Cidade turística'
-                                link='https://www.santoantoniodopinhal.sp.gov.br/a-cidade/guia-turistico-pdf'>
-                                <p className='text-sm italic min-h-36'>"Quem ama natureza e procura paz e tranquilidade, encontra em Santo Antônio do Pinhal o local ideal para passar momentos agradáveis. Venha respirar o ar puro da montanha e aproveitar da hospitalidade encantadora."</p>
-                            </Atividade>
-
-                            <Atividade
-                                img={ASSET_PREFIX + 'img/atividades/santuario-aparecida.webp'}
-                                name='SANTUÁRIO NACIONAL DE APARECIDA'
-                                description='Templo religioso'
-                                link='https://www.aparecida.sp.gov.br/portal/turismo/0/9/2696/santuario-nacional'>
-                                <p className="text-sm italic min-h-36">"Considerada a maior Igreja Mariana do mundo, o Santuário Nacional de Nossa Senhora da Conceição Aparecida é conhecido pela grandiosidade de sua obra. No local encontra-se a Imagem original de Nossa Senhora Aparecida encontrada por pescadores nas águas do Rio Paraíba do Sul em 1717."</p>
-                            </Atividade>
-
-                            <Atividade
-                                img={ASSET_PREFIX + 'img/atividades/campos-do-jordao.webp'}
-                                name='CAMPOS DO JORDÃO'
-                                description='Cidade turística'
-                                link='https://www.camposdojordao.sp.gov.br/'>
-                                <p className="text-sm italic min-h-36">"Localizada na Serra da Mantiqueira no estado de São Paulo, é o município mais elevado do país, com 1628 metros de altitude. A cidade é conhecida por sua arquitetura tipicamente suíça e é um dos principais destinos de inverno do Brasil."</p>
-                            </Atividade>
-
-                        </Wrapper>
                     </ContentDefault>
                 </Content>
             </Section>
@@ -628,7 +417,7 @@ export default function Main() {
                             <Collapsible title='Como recebo meu ingresso?'>
                                 <p>O ingresso será enviado para o seu e-mail. Será necessário que você mostre seu ingresso na entrada do evento. Por isso, no momento da compra, informe um e-mail ao qual você tenha acesso. Você poderá apresentar o seu ingresso de forma impressa ou digital, por meio de um print.</p>
                             </Collapsible>
-                            <Checkout/>
+                            <Checkout />
                         </Container>
                     </ContentDefault>
                 </Content>
