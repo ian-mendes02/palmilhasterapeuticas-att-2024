@@ -8,7 +8,7 @@ import '$/css/carousel.css';
 export default function Page() {
     const $ = (el) => document.querySelector(el);
 
-    const ASSET_PREFIX = process.env.NEXT_PUBLIC_ASSET_PREFIX
+    const ASSET_PREFIX = process.env.NEXT_PUBLIC_ASSET_PREFIX;
 
     React.useEffect(() => {
         !function(e, t, a, n, g) {e[n] = e[n] || [], e[n].push({"gtm.start": (new Date).getTime(), event: "gtm.js"}); var m = t.getElementsByTagName(a)[0], r = t.createElement(a); r.async = !0, r.src = "https://www.googletagmanager.com/gtm.js?id=GTM-5TTGRP4", m.parentNode.insertBefore(r, m);}(window, document, "script", "dataLayer");
@@ -112,11 +112,19 @@ export default function Page() {
                         <div className="divider max-[820px]:mb-8"></div>
                         <Wrapper className='items-center justify-evenly'>
                             <Container className='w-full'>
-                                <Carousel isInfinite withIndicator visibleItemsCount={1}>
-                                    <div className='w-full h-auto'><img src={ASSET_PREFIX + '/img/[cursos_presenciais]_palmilha_1.webp'} alt='' draggable='false' className='w-3/4 max-[820px]:w-full h-auto m-auto' /></div>
-                                    <div className='w-full h-auto'><img src={ASSET_PREFIX + '/img/[cursos_presenciais]_palmilha_2.webp'} alt='' draggable='false' className='w-3/4 max-[820px]:w-full h-auto m-auto' /></div>
-                                    <div className='w-full h-auto'><img src={ASSET_PREFIX + '/img/[cursos_presenciais]_palmilha_3.webp'} alt='' draggable='false' className='w-3/4 max-[820px]:w-full h-auto m-auto' /></div>
-                                    <div className='w-full h-auto'><img src={ASSET_PREFIX + '/img/[cursos_presenciais]_palmilha_4.webp'} alt='' draggable='false' className='w-3/4 max-[820px]:w-full h-auto m-auto' /></div>
+                                <Carousel isInfinite withIndicator visibleItemsCount={1} isFullWidth>
+                                    <div className='w-full h-auto'>
+                                        <img src={ASSET_PREFIX + '/img/[cursos_presenciais]_palmilha_1.webp'} alt='' draggable='false' className='w-3/4 h-auto m-auto' />
+                                    </div>
+                                    <div className='w-full h-auto'>
+                                        <img src={ASSET_PREFIX + '/img/[cursos_presenciais]_palmilha_2.webp'} alt='' draggable='false' className='w-3/4 h-auto m-auto' />
+                                    </div>
+                                    <div className='w-full h-auto'>
+                                        <img src={ASSET_PREFIX + '/img/[cursos_presenciais]_palmilha_3.webp'} alt='' draggable='false' className='w-3/4 h-auto m-auto' />
+                                    </div>
+                                    <div className='w-full h-auto'>
+                                        <img src={ASSET_PREFIX + '/img/[cursos_presenciais]_palmilha_4.webp'} alt='' draggable='false' className='w-3/4 h-auto m-auto' />
+                                    </div>
                                 </Carousel>
                             </Container>
                         </Wrapper>
