@@ -2,7 +2,7 @@
 //import {FloatingButton, ButtonContainer} from '@/lib/modules/floating-button';
 import Countdown from '@/lib/modules/countdown';
 import {Section, Content, ContentDefault, Container, Wrapper, Loading, Grid} from '@/lib/modules/layout-components';
-import {List, Collapsible} from '@/lib/modules/ui-components';
+import {Collapsible} from '@/lib/modules/ui-components';
 import {EventoIngressos} from '@/lib/modules/ticket-purchase';
 import {useEffect, useRef, useMemo, useState} from 'react';
 import '$/css/carousel.css';
@@ -10,93 +10,44 @@ import {scrollToTop} from '@/lib/modules/utils';
 
 export default function Main() {
 
-    const $ = (el) => document.querySelector(el);
-
-    const [pageLoading, setPageLoading] = useState(true);
-    const [viewportWidth, setViewportWidth] = useState(null);
-    const [fullscreenContent, setFullscreenContent] = useState(null);
-    const [modalActive, setModalActive] = useState(false);
-
-    const isMobile = useMemo(() => viewportWidth <= 820, [viewportWidth]);
-    const ASSET_PREFIX = process.env.NEXT_PUBLIC_ASSET_PREFIX;
-    const defaultUserProfile = useMemo(() => ASSET_PREFIX + 'img/default_user.jpg', []);
-    const defaultText = 'Teremos mais informações em breve. Fique ligado!';
-    const defaultOccupation = '?';
-
-    const containerRef = useRef(null);
-    const contentRef = useRef(null);
-
-    useEffect(() => {
-        !function(e, t, a, n, g) {e[n] = e[n] || [], e[n].push({"gtm.start": (new Date).getTime(), event: "gtm.js"}); var m = t.getElementsByTagName(a)[0], r = t.createElement(a); r.async = !0, r.src = "https://www.googletagmanager.com/gtm.js?id=GTM-5TTGRP4", m.parentNode.insertBefore(r, m);}(window, document, "script", "dataLayer");
-        document.title = 'Evento Palmilhas e Ciência Aplicada 2024';
-    }, []);
-
-    useEffect(() => {
-        function vw() {
-            setViewportWidth(window.visualViewport.width);
-        } vw();
-        window.visualViewport.addEventListener('resize', vw);
-        return () => window.visualViewport.removeEventListener('resize', vw);
-    }, []);
-
-    useEffect(() => {
-        const scrollEvents = ['wheel', 'scroll', 'keydown'];
-        const scrollKeys = ["Space", "ArrowUp", "ArrowDown"];
-        const handleClickOutside = (e) =>
-            !contentRef.current?.contains(e.target)
-                ? setModalActive(false)
-                : null;
-        const preventScroll = (e) => {
-            if (scrollEvents.includes(e.type)) {
-                if (e.type === 'keydown') {
-                    if (e.code === 'Escape')
-                        setModalActive(false);
-                    else if (scrollKeys.includes(e.code))
-                        e.preventDefault();
-                } else e.preventDefault();
-            }
-        };
-        if (modalActive) {
-            document.addEventListener('mousedown', handleClickOutside);
-            scrollEvents.forEach((event) => document.addEventListener(event, preventScroll, {passive: false}));
-        }
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-            scrollEvents.forEach((event) => document.removeEventListener(event, preventScroll, {passive: false}));
-        };
-    }, [modalActive]);
-
-    const VideoEvento = (
-        <iframe
-        className='outline-none aspect-video w-full max-[820px]:!w-screen rounded-lg relative z-50'
-            src="https://www.youtube.com/embed/ELc7U9NgONY" 
-            allow='autoplay;picture-in-picture;web-share'
-            allowFullScreen
-        ></iframe>
-    );
-
-    const Fullscreen = () => (
-        <div className='bg-[rgb(0,0,0,0.5)] backdrop-blur-lg fixed z-[999] top-0 left-0 w-[100vw] h-[100vh] flex justify-center items-center px-32 py-[2.5%] max-[820px]:!p-0' ref={containerRef}>
-            <div className='w-full h-full flex items-center justify-center relative'>
-                <div className='h-auto w-full relative' ref={contentRef}>
-                    <div className='w-12 h-12 absolute right-0 top-0 translate-x-1/2 -translate-y-1/2 max-[820px]:!-translate-x-1/2 max-[820px]:!-translate-y-full'>
-                        <span className='w-full text-right cursor-pointer' onClick={() => setModalActive(false)}><i className="fa-regular fa-circle-xmark text-2xl" aria-hidden="true"></i></span>
+    const $ = el => document.querySelector( el )
+        , [pageLoading, setPageLoading] = useState( true )
+        , [viewportWidth, setViewportWidth] = useState( null )
+        , [fullscreenContent, setFullscreenContent] = useState( null )
+        , [modalActive, setModalActive] = useState( false )
+        , isMobile = useMemo( () => viewportWidth <= 820, [viewportWidth] )
+        , ASSET_PREFIX = process.env.NEXT_PUBLIC_ASSET_PREFIX
+        , defaultUserProfile = useMemo( () => ASSET_PREFIX + 'img/default_user.jpg', [] )
+        , defaultText = 'Teremos mais informações em breve. Fique ligado!'
+        , defaultOccupation = '?'
+        , containerRef = useRef( null )
+        , contentRef = useRef( null )
+        , VideoEvento = (
+            <iframe
+                className='outline-none aspect-video w-full max-[820px]:!w-screen rounded-lg relative z-50'
+                src="https://www.youtube.com/embed/ELc7U9NgONY"
+                allow='autoplay;picture-in-picture;web-share'
+                allowFullScreen
+            ></iframe>
+        )
+        , toggleFullscreen = c => (
+            setFullscreenContent( c ),
+            setModalActive( true )
+        )
+        , Fullscreen = () => (
+            <div className='bg-[rgb(0,0,0,0.5)] backdrop-blur-lg fixed z-[999] top-0 left-0 w-[100vw] h-[100vh] flex justify-center items-center px-32 py-[2.5%] max-[820px]:!p-0' ref={containerRef}>
+                <div className='w-full h-full flex items-center justify-center relative'>
+                    <div className='h-auto w-full relative' ref={contentRef}>
+                        <div className='w-12 h-12 absolute right-0 top-0 translate-x-1/2 -translate-y-1/2 max-[820px]:!-translate-x-1/2 max-[820px]:!-translate-y-full'>
+                            <span className='w-full text-right cursor-pointer' onClick={() => setModalActive( false )}><i className="fa-regular fa-circle-xmark text-2xl" aria-hidden="true"></i></span>
+                        </div>
+                        <Loading width={32} />
+                        {fullscreenContent}
                     </div>
-                    <Loading width={32} />
-                    {fullscreenContent}
                 </div>
             </div>
-        </div>
-    );
-
-    const Palestrante = ({
-        children = defaultText,
-        src = defaultUserProfile,
-        name = 'Palestrante não confirmado',
-        occupation = defaultOccupation,
-        theme = 'Tema da palestra'
-    }) => {
-        return (
+        )
+        , Palestrante = ( {children = defaultText, src = defaultUserProfile, name = 'Palestrante não confirmado', occupation = defaultOccupation, theme = 'Tema da palestra'} ) => (
             <div className='w-full flex items-start justify-center'>
                 <div className='p-2 rounded-2xl shadow-md bg-[#121e31] border-t-2 border-sky-900 w-full h-full'>
                     <div className="flex flex-col justify-between relative duration-300 ease-out">
@@ -118,33 +69,57 @@ export default function Main() {
                     </div>
                 </div>
             </div>
+        )
+        , Checkout = () => (
+            <div
+                className='block w-max py-4 px-8 my-8 mx-auto rounded-full shadow-lg bg-sky-700 grad-alt cursor-pointer hover:brightness-105 hover:-scale-y-[5px] duration-150 ease-out'
+                onClick={() => scrollToTop( '#evt-valor' )}
+            ><span className='m-auto text-center text-white font-bold'>QUERO GARANTIR MINHA VAGA</span></div>
         );
-    };
 
-    const Checkout = () => (
-        <div
-            className='block w-max py-4 px-8 my-8 mx-auto rounded-full shadow-lg bg-sky-700 grad-alt cursor-pointer hover:brightness-105 hover:-scale-y-[5px] duration-150 ease-out'
-            onClick={() => scrollToTop('#evt-valor')}
-        ><span className='m-auto text-center text-white font-bold'>QUERO GARANTIR MINHA VAGA</span></div>
-    );
+    useEffect( () => {
+        !function( e, t, a, n, g ) {e[n] = e[n] || [], e[n].push( {"gtm.start": ( new Date ).getTime(), event: "gtm.js"} ); var m = t.getElementsByTagName( a )[0], r = t.createElement( a ); r.async = !0, r.src = "https://www.googletagmanager.com/gtm.js?id=GTM-5TTGRP4", m.parentNode.insertBefore( r, m );}( window, document, "script", "dataLayer" );
+        document.title = 'Evento Palmilhas e Ciência Aplicada 2024';
+        let vw = () => setViewportWidth( window.visualViewport.width );
+        vw();
+        window.visualViewport.addEventListener( 'resize', vw );
+        return () => window.visualViewport.removeEventListener( 'resize', vw );
+    }, [] );
 
-    function toggleFullscreen(content) {
-        setFullscreenContent(content);
-        setModalActive(true);
-    }
+    useEffect( () => {
+        let scrollEvents = ['wheel', 'scroll', 'keydown']
+            , scrollKeys = ["Space", "ArrowUp", "ArrowDown"]
+            , handleClickOutside = e => !contentRef.current?.contains( e.target ) ? setModalActive( false ) : null
+            , preventScroll = e => scrollEvents.includes( e.type ) && e.type === 'keydown'
+                ? ( e.code === 'Escape'
+                    ? setModalActive( false )
+                    : scrollKeys.includes( e.code ) && e.preventDefault()
+                ) : e.preventDefault();
 
-    useEffect(() => setPageLoading(false), []);
+        modalActive && (
+            document.addEventListener( 'mousedown', handleClickOutside ),
+            scrollEvents.forEach( e => document.addEventListener( e, preventScroll, {passive: false} ) )
+        );
+
+        return () => (
+            document.removeEventListener( 'mousedown', handleClickOutside ),
+            scrollEvents.forEach( e => document.removeEventListener( e, preventScroll, {passive: false} ) )
+        );
+
+    }, [modalActive] );
+
+    useEffect( () => setPageLoading( false ), [] );
 
     return (
         <main className='bg-[radial-gradient(circle_at_center,#1E3050,#121e31)]'>
 
             {pageLoading && (
-                <div className='fixed w-screen h-screen bg-primary-900 z-[999]'>
+                <div className='fixed w-screen h-screen bg-primary-900 bg-opacity-50 backdrop-blur-3xl z-[999]'>
                     <Loading width={32} />
                 </div>
             )}
 
-            <Countdown isMobile={isMobile} />
+            <Countdown paused />
 
             <Section id='evt-header' className='pt-48 pb-12 flex items-center overflow-hidden bg-[var(--cor-4)]'>
 
@@ -180,7 +155,7 @@ export default function Main() {
                             </Wrapper>
                             <button
                                 className='font-bold text-2xl max-[820px]:!text-base shadow-md w-fit py-4 px-16 rounded-full max-[820px]:!max-w-[340px] grad-alt hover:scale-105 hover:brightness-105 duration-200 my-4'
-                                onClick={() => $('#evt-valor').scrollIntoView({block: 'start'})}>
+                                onClick={() => $( '#evt-valor' ).scrollIntoView( {block: 'start'} )}>
                                 GARANTA SUA VAGA
                             </button>
                         </Container>
@@ -366,7 +341,7 @@ export default function Main() {
                     <h1 className='grad-text text-center font-semibold text-3xl'>Confira como foi nosso último encontro</h1>
                 </div>
                 <div className='relative pt-24 h-[576px] max-[820px]:!h-[90vh] flex items-center overflow-hidden'>
-                    <div className='cursor-pointer' onClick={() => toggleFullscreen(VideoEvento)}>
+                    <div className='cursor-pointer' onClick={() => toggleFullscreen( VideoEvento )}>
                         {!modalActive && <div className='absolute-center w-20 h-20 z-30'>
                             <img src={ASSET_PREFIX + 'img/svg/play_button.svg'} alt='' draggable='false' className='w-full h-full' />
                         </div>}
@@ -380,8 +355,8 @@ export default function Main() {
                 {modalActive && <Fullscreen>{fullscreenContent}</Fullscreen>}
             </Section>
 
-            <Section id='evt-valor'>
-                <Content>
+            <Section id='evt-valor' className='shadow-lg bg-[radial-gradient(circle_at_center,#1E3050,#121e31)] border-y-2 border-sky-800 chuva-palmilhas rounded-bl-3xl rounded-br-3xl'>
+                <Content className='relative z-30'>
                     <ContentDefault>
                         <EventoIngressos />
                     </ContentDefault>

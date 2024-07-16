@@ -6,24 +6,23 @@ import {TEInput} from 'tw-elements-react';
 import {log} from './utils';
 import '$/css/globals.css';
 
-function EventoIngressos() {
+function EventoIngressos( {online = false} ) {
 
-    const [showValidationPrompt, setShowValidationPrompt] = useState(false);
-    const [requireValidation, setRequireValidation] = useState(true);
-    const [showDiscountInfo, setShowDiscountInfo] = useState(false);
-    const [discountMessage, setDiscountMessage] = useState(null);
-    const [displayMessage, setDisplayMessage] = useState(null);
-    const [validDiscount, setValidDiscount] = useState(false);
-    const [ajaxResponse, setAjaxResponse] = useState(null);
-    const [buttonText, setButtonText] = useState('ENVIAR');
-    const [userEmail, setUserEmail] = useState('');
-    const [userName, setUserName] = useState('');
-    const [userIP, setUserIP] = useState(null);
-
-    const API_URL = process.env.NEXT_PUBLIC_API;
-
-    const price = useMemo(() => {
-        return {
+    const [showValidationPrompt, setShowValidationPrompt] = useState( false )
+        , [requireValidation, setRequireValidation] = useState( true )
+        , [showDiscountInfo, setShowDiscountInfo] = useState( false )
+        , [discountMessage, setDiscountMessage] = useState( null )
+        , [displayMessage, setDisplayMessage] = useState( null )
+        , [validDiscount, setValidDiscount] = useState( false )
+        , [ajaxResponse, setAjaxResponse] = useState( null )
+        , [buttonText, setButtonText] = useState( 'ENVIAR' )
+        , [userEmail, setUserEmail] = useState( '' )
+        , [userName, setUserName] = useState( '' )
+        , [userIP, setUserIP] = useState( null )
+        , API_URL = process.env.NEXT_PUBLIC_API
+        , messageRef = useRef( null )
+        , loteAtual = "lote1"
+        , price = {
             lote1: {
                 base: "590,00",
                 discount: "450,00"
@@ -36,59 +35,45 @@ function EventoIngressos() {
                 base: "790,00",
                 discount: "650,00"
             }
-        };
-    }, []);
-
-    const link = useMemo(() => {
-        return {
+        }
+        , link = {
             vip: 'https://secure.doppus.com/pay/PBOJJ9ZMBOJJ9ZG9Z3555',
             online: 'https://secure.doppus.com/pay/PBOJJ9ZMBOJJ9ZG9Z3O55',
             presencial: {
                 discount: 'https://secure.doppus.com/pay/PBOJJ9ZMBOJJ9ZG9ZH000',
                 base: 'https://secure.doppus.com/pay/PBOJJ9ZMBOJJ9ZG9Z355J'
             }
-        };
-    }, []);
-
-    const loteAtual = "lote1";
-
-    const statusMessage = useMemo(() => {
-        return {
+        }
+        , statusMessage = {
             error_no_input: <span className='text-red-500 text-center'>Parece que há campos em branco, tente novamente.</span>,
             server_error: <span className='text-orange-500 text-center font-light text-sm'>Servidor indisponível no momento, tente novamente mais tarde.</span>,
             invalid_email: <span className='text-orange-500 text-center font-light text-sm'>Não foi possível validar o email inserido, verifique e tente novamente.</span>
-        };
-    }, []);
+        }
+        , validateEmail = email => String( email ).toLowerCase().match( /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ );
 
-    const validateEmail = (email) => {
-        return String(email).toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-    };
-
-    const messageRef = useRef(null);
-
-    async function userAjax(action, data) {
-        log('Fetching data from server...', "info");
-        await fetch(API_URL + "evento2024/integration/", {
+    async function userAjax( action, data ) {
+        log( 'Fetching data from server...', "info" );
+        fetch( API_URL + "evento2024/integration/", {
             method: 'POST',
             headers: {"Content-type": "application/json"},
-            body: JSON.stringify({action: action, data: data})
-        })
-            .then((res) => res.json())
-            .then((json) => setAjaxResponse(json))
-            .catch((reason) => {
-                log(reason);
-                setDisplayMessage(statusMessage.server_error);
-                setButtonText('ENVIAR');
-            });
+            body: JSON.stringify( {action: action, data: data} )
+        } )
+            .then( res => res.json() )
+            .then( json => setAjaxResponse( json ) )
+            .catch( reason => {
+                log( reason );
+                setDisplayMessage( statusMessage.server_error );
+                setButtonText( 'ENVIAR' );
+            } );
     }
 
     async function handleValidation() {
-        if (userEmail == '' || userName == '') {
-            setDisplayMessage(statusMessage.error_no_input);
+        if ( userEmail == '' || userName == '' ) {
+            setDisplayMessage( statusMessage.error_no_input );
             return;
         }
-        if (!validateEmail(userEmail)) {
-            setDisplayMessage(statusMessage.invalid_email);
+        if ( !validateEmail( userEmail ) ) {
+            setDisplayMessage( statusMessage.invalid_email );
             return;
         }
         var usrdata = {
@@ -96,64 +81,59 @@ function EventoIngressos() {
             user_name: userName,
             user_ip: userIP
         };
-        userAjax("verify_user", usrdata);
-        setDisplayMessage(null);
-        setButtonText(<Loading width={24} />);
+        await userAjax( "verify_user", usrdata );
+        setDisplayMessage( null );
+        setButtonText( <Loading width={24} /> );
     }
 
-    async function getIP() {
-        await fetch('https://api.ipify.org/?format=json')
-            .then((res) => res.json())
-            .then((ip) => setUserIP(ip.ip));
+    function getIP() {
+        fetch( 'https://api.ipify.org/?format=json' )
+            .then( res => res.json() )
+            .then( ip => setUserIP( ip.ip ) );
     }
 
-    useEffect(() => {
-        if (userIP) {
-            const body = JSON.stringify({action: "page_view", data: {user_ip: userIP}});
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", API_URL + "evento2024/integration/");
-            xhr.setRequestHeader("Content-type", "application/json");
-            xhr.send(body);
-        } else getIP();
-    }, [userIP]);
+    useEffect( () => {
+        var body, xhr;
+        userIP ? (
+            body = JSON.stringify( {action: "page_view", data: {user_ip: userIP}} ),
+            xhr = new XMLHttpRequest(),
+            xhr.open( "POST", API_URL + "evento2024/integration/" ),
+            xhr.setRequestHeader( "Content-type", "application/json" ),
+            xhr.send( body )
+        ) : getIP();
+    }, [userIP] );
 
-    useEffect(() => {
-        if (requireValidation && ajaxResponse) {
-            log(ajaxResponse);
-            setValidDiscount(ajaxResponse.discount_elegible);
-            if (ajaxResponse.valid_member)
-                setDiscountMessage("Desconto Palmilhando®");
-            else if (ajaxResponse.valid_atendee)
-                setDiscountMessage("Desconto Participante 2023");
-            else
-                setDiscountMessage(null);
-            log("Verification complete.", "success");
-            setRequireValidation(false);
+    useEffect( () => {
+        if ( requireValidation && ajaxResponse ) {
+            log( ajaxResponse );
+            setValidDiscount( ajaxResponse.discount_elegible );
+            if ( ajaxResponse.valid_member ) setDiscountMessage( "Desconto Palmilhando®" );
+            else if ( ajaxResponse.valid_atendee ) setDiscountMessage( "Desconto Participante 2023" );
+            else setDiscountMessage( null );
+            log( "Verification complete.", "success" );
+            setRequireValidation( false );
         }
-        setButtonText("ENVIAR");
-    }, [ajaxResponse]);
+        setButtonText( "ENVIAR" );
+    }, [ajaxResponse] );
 
-    useEffect(() => {
-        const handleClickOutside = (e) =>
-            !messageRef.current?.contains(e.target)
-                ? setShowDiscountInfo(false)
-                : null;
-        if (showDiscountInfo) document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [showDiscountInfo]);
+    useEffect( () => {
+        const handleClickOutside = e => !messageRef.current?.contains( e.target ) && setShowDiscountInfo( false );
+        showDiscountInfo && document.addEventListener( 'mousedown', handleClickOutside );
+        return () => document.removeEventListener( 'mousedown', handleClickOutside );
+    }, [showDiscountInfo] );
 
-    useEffect(() => {
-        setDisplayMessage(null);
-        setRequireValidation(true);
-    }, [userName, userEmail]);
+    useEffect( () => {
+        setDisplayMessage( null );
+        setRequireValidation( true );
+    }, [userName, userEmail] );
 
     return (
         <div>
             <h2 className='grad-text font-bold mb-2 relative text-center text-2xl'>GARANTA SUA PARTICIPAÇÃO</h2>
-            <div className='relative z-10 my-8'>
-                <Grid className='grid-cols-3 max-[820px]:!grid-cols-1 w-full gap-4'>
+            <div className='relative z-30 my-8'>
+                <Grid className={( online ? 'grid-cols-1' : 'grid-cols-2' ) + ' max-[820px]:!grid-cols-1 w-max gap-4 mx-auto'}>
 
-                    <Container id="online" className='w-full relative'>
+                    {online && <Container id="online" className='w-full max-w-96 justify-self-center relative'>
                         <div className="flex flex-col items-center p-4 border-t-2 border-sky-600 rounded-2xl bg-sky-900 shadow-lg h-max w-full relative">
                             <Grid className="w-full mb-4 grid-cols-2">
                                 <Wrapper className='items-center justify-start flex-nowrap'>
@@ -178,16 +158,16 @@ function EventoIngressos() {
                                 </a>
                             </Container>
                         </div>
-                    </Container>
+                    </Container>}
 
-                    <Container id="presencial" className='w-full relative'>
+                    {!online && <Container id="presencial" className='w-full max-w-96 justify-self-center relative'>
                         <div className="flex flex-col p-4 border-t-2 border-sky-800 rounded-2xl bg-primary-900 shadow-xl h-max w-full overflow-hidden">
                             <Grid className="w-full mb-4 grid-cols-2">
                                 <Wrapper className='items-center justify-start flex-nowrap'>
                                     <div className='w-10 h-10 min-w-10 mr-2 bg-primary-500 rounded-full flex items-center justify-center shadow-md'>
                                         <i className="fa-solid fa-ticket text-2xl text-sky-100" aria-hidden="true"></i>
                                     </div>
-                                    <h2 className='text-sky-100 font-bold' style={{fontSize: '150%'}}>PRESENCIAL</h2>
+                                    <h2 className='text-sky-100 font-bold' style={{fontSize: '150%'}}>PARTICIPANTE</h2>
                                 </Wrapper>
                                 <span className='bg-sky-100 rounded-full text-sky-800 px-4 py-1 h-fit w-fit justify-self-end max-[1024px]:my-4'>1º LOTE</span>
                             </Grid>
@@ -213,8 +193,8 @@ function EventoIngressos() {
                                                     <span className='grad-text'>{discountMessage || 'Desconto exclusivo'}</span>
                                                     <i
                                                         className="fa-solid fa-circle-question ml-2 cursor-pointer text-orange-400"
-                                                        onMouseEnter={() => setShowDiscountInfo(true)}
-                                                        onMouseLeave={() => setShowDiscountInfo(false)}
+                                                        onMouseEnter={() => setShowDiscountInfo( true )}
+                                                        onMouseLeave={() => setShowDiscountInfo( false )}
                                                         aria-hidden="true"
                                                     ></i>
                                                     {showDiscountInfo &&
@@ -232,7 +212,7 @@ function EventoIngressos() {
                                             RESERVE SUA VAGA</a>
                                         <a
                                             className='font-bold text-xl max-[1024px]:text-base shadow-md w-full py-2 rounded-full bg-cyan-700 hover:brightness-95 duration-200 my-2 text-center cursor-pointer'
-                                            onClick={() => setShowValidationPrompt(true)}
+                                            onClick={() => setShowValidationPrompt( true )}
                                         >GARANTA SEU DESCONTO</a>
                                     </Container>
                                 ) : (
@@ -243,13 +223,13 @@ function EventoIngressos() {
                                                 <p className='text-xs font-light'>Informe seus dados para que possamos confirmar sua assinatura ou participação e disponibilizar seu desconto exclusivo!</p>
                                             </Container>
                                             <div className="divider"></div>
-                                            <form id='compra-ingresso' onSubmit={(e) => e.preventDefault()}>
+                                            <form id='compra-ingresso' onSubmit={( e ) => e.preventDefault()}>
                                                 <Container>
                                                     <Container className="my-2">
-                                                        <TEInput type="text" id="user_name" value={userName} onChange={(e) => setUserName(e.target.value)} label='Nome completo' className='text-white !outline-none'></TEInput>
+                                                        <TEInput type="text" id="user_name" value={userName} onChange={( e ) => setUserName( e.target.value )} label='Nome completo' className='text-white !outline-none'></TEInput>
                                                     </Container>
                                                     <Container className='my-2'>
-                                                        <TEInput type='email' id='user_email' value={userEmail} onChange={(e) => setUserEmail(e.target.value)} label='Email' className='text-white !outline-none'></TEInput>
+                                                        <TEInput type='email' id='user_email' value={userEmail} onChange={( e ) => setUserEmail( e.target.value )} label='Email' className='text-white !outline-none'></TEInput>
                                                     </Container>
                                                 </Container>
                                                 <button
@@ -262,7 +242,7 @@ function EventoIngressos() {
                                                     className='block font-semibold text-lg shadow-md w-full py-2 px-8 rounded-full max-[820px]:max-w-[340px] bg-primary-500 hover:brightness-95 duration-200 my-4 text-center mx-auto relative h-12'>
                                                     RESERVE SUA VAGA
                                                 </a>}
-                                                <span onClick={() => setShowValidationPrompt(!1)} className='underline underline-offset-2 text-center cursor-pointer'>Voltar</span>
+                                                <span onClick={() => setShowValidationPrompt( !1 )} className='underline underline-offset-2 text-center cursor-pointer'>Voltar</span>
                                                 <div className='my-2'>
                                                     {displayMessage}
                                                 </div>
@@ -272,9 +252,9 @@ function EventoIngressos() {
                                 )}
                             </Grid>
                         </div>
-                    </Container>
+                    </Container>}
 
-                    <Container id="vip" className='w-full relative'>
+                    {!online && <Container id="vip" className='w-full max-w-96 justify-self-center relative'>
                         <div className="flex flex-col items-center p-4 border-t-2 border-sky-800 rounded-2xl bg-[#121e31] shadow-lg h-max w-full relative brightness-90 opacity-50 grayscale">
                             <Grid className="w-full mb-4 grid-cols-2">
                                 <Wrapper className='items-center justify-start flex-nowrap'>
@@ -298,7 +278,7 @@ function EventoIngressos() {
                                 <span className='text-center text-sm font-light'>ESGOTADO</span>
                             </Container>
                         </div>
-                    </Container>
+                    </Container>}
 
                 </Grid>
             </div>
