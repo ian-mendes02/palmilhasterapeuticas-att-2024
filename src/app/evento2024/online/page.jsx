@@ -1,5 +1,4 @@
 'use client';
-//import {FloatingButton, ButtonContainer} from '@/lib/modules/floating-button';
 import Countdown from '@/lib/modules/countdown';
 import {Section, Content, ContentDefault, Container, Wrapper, Loading, Grid} from '@/lib/modules/layout-components';
 import {Collapsible} from '@/lib/modules/ui-components';
@@ -146,6 +145,15 @@ export default function Main() {
                                     </div>
                                     <h2 className='font-light text-base text-left'>13 e 14 de Setembro <br />das 8h às 18h</h2>
                                 </Wrapper>
+                                <Wrapper className="items-center flex-nowrap w-max m-2">
+                                    <div className='w-8 h-8 mr-4 bg-[var(--cor-1)] rounded-full flex items-center justify-center shadow-md'>
+                                        <i className="fa-solid fa-video" aria-hidden="true"></i>
+                                    </div>
+                                    <h2 className='font-extralight text-base text-left'>
+                                        <strong>Evento com transmissão AO VIVO</strong><br />
+                                        Via Zoom
+                                    </h2>
+                                </Wrapper>
                             </Wrapper>
                             <button
                                 className='font-bold text-2xl max-[820px]:!text-base shadow-md w-fit py-4 px-16 rounded-full max-[820px]:!max-w-[340px] grad-alt hover:scale-105 hover:brightness-105 duration-200 my-4'
@@ -187,7 +195,8 @@ export default function Main() {
                                     )}
                                     <h2 className='font-extralight text-base'>
                                         {isMobile && <i className="fa-solid fa-video mr-2" aria-hidden="true"></i>}
-                                        <strong>Via Zoom</strong>
+                                        <strong>Evento com transmissão AO VIVO</strong><br />
+                                        Via Zoom
                                     </h2>
                                 </Wrapper>
                                 <div
