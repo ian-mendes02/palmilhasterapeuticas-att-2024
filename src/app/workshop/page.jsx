@@ -36,7 +36,7 @@ export default function Main() {
 
     function registerEmail() {
         setStatusMessage( null );
-        var apiUrl = 'http://localhost:8081/projects/scripts/php/palmilhando/api/'
+        var apiUrl = process.env.NEXT_PUBLIC_API
             , data = {
                 action: 'workshop_register',
                 data: {email: userEmail}
