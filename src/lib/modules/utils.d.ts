@@ -3,10 +3,13 @@ type Node = HTMLElement | ReactNode;
 export = Utils;
 export as namespace Utils;
 declare namespace Utils {
-    function list(...classes: string[]): string;
-    function prefix(prefix: string, classes: string): string;
-    function url(str: string): string;
-    function scrollToCenter(el: string): void;
-    function scrollToTop(el: Node | string): void;
-    function log(msg: any, debug: boolean, type: string): void;
+    function list( ...classes: string[] ): string;
+    function prefix( prefix: string, classes: string ): string;
+    function url( str: string ): string;
+    function scrollToCenter( el: string ): void;
+    function scrollToTop( el: Node | string ): void;
+    function log( msg: any, debug: boolean, type: string ): void;
+    async function getIp(): Promise<string>;
+    async function post( url: string, data: any ): Promise<any>;
+    function pageView(): void;
 }

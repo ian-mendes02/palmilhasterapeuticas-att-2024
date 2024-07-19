@@ -1,9 +1,8 @@
 'use client';
-import {Container, Wrapper, Loading, Grid} from '@/lib/modules/layout-components';
-import {useEffect, useMemo, useState, useRef} from 'react';
+import {Container, Wrapper, Grid} from '@/lib/modules/layout-components';
+import {useEffect, useState, useRef} from 'react';
 import {List} from '@/lib/modules/ui-components';
 import {TEInput} from 'tw-elements-react';
-import {log} from './utils';
 import '$/css/globals.css';
 
 function EventoIngressos( {online = false} ) {
@@ -14,11 +13,9 @@ function EventoIngressos( {online = false} ) {
         , [discountMessage, setDiscountMessage] = useState( null )
         , [displayMessage, setDisplayMessage] = useState( null )
         , [validDiscount, setValidDiscount] = useState( false )
-        , [ajaxResponse, setAjaxResponse] = useState( null )
         , [buttonText, setButtonText] = useState( 'ENVIAR' )
         , [userEmail, setUserEmail] = useState( '' )
         , [userName, setUserName] = useState( '' )
-        , [userIP, setUserIP] = useState( null )
         , API_URL = process.env.NEXT_PUBLIC_API
         , messageRef = useRef( null )
         , loteAtual = "lote1"
@@ -44,77 +41,52 @@ function EventoIngressos( {online = false} ) {
                 base: 'https://secure.doppus.com/pay/PBOJJ9ZMBOJJ9ZG9Z355J'
             }
         }
-        , statusMessage = {
+        , button = {
+            default: 'ENVIAR',
+            retry: 'Tentar novamente',
+            loading: <span className='spinner w-8 h-8 mx-auto'></span>,
+            success: <span className='checkmark w-8 h-8 mx-auto'></span>
+        }
+        , status = {
             error_no_input: <span className='text-red-500 text-center'>Parece que há campos em branco, tente novamente.</span>,
             server_error: <span className='text-orange-500 text-center font-light text-sm'>Servidor indisponível no momento, tente novamente mais tarde.</span>,
             invalid_email: <span className='text-orange-500 text-center font-light text-sm'>Não foi possível validar o email inserido, verifique e tente novamente.</span>
-        }
-        , validateEmail = email => String( email ).toLowerCase().match( /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ );
+        };
 
-    async function userAjax( action, data ) {
-        log( 'Fetching data from server...', "info" );
-        fetch( API_URL + "evento2024/integration/", {
-            method: 'POST',
-            headers: {"Content-type": "application/json"},
-            body: JSON.stringify( {action: action, data: data} )
+    function handleValidation() {
+        if ( userEmail == '' || userName == '' ) {
+            setDisplayMessage( status.error_no_input );
+            return;
+        }
+        setDisplayMessage( null );
+        setButtonText( button.loading );
+        fetch( API_URL, {
+            headers: {"Content-Type": "application/json"},
+            method: 'post',
+            body: JSON.stringify( {
+                action: "user_validate",
+                data: {
+                    name: userName,
+                    email: userEmail
+                }
+            } )
         } )
             .then( res => res.json() )
-            .then( json => setAjaxResponse( json ) )
-            .catch( reason => {
-                log( reason );
-                setDisplayMessage( statusMessage.server_error );
-                setButtonText( 'ENVIAR' );
+            .then( res => {
+                if ( res?.ok ) {
+                    let data = res.data;
+                    setButtonText( button.success );
+                    setValidDiscount( res.data.member || res.data.atendee );
+                    if ( data.member ) setDiscountMessage( "Desconto Palmilhando®" );
+                    else if ( data.atendee ) setDiscountMessage( "Desconto Participante 2023" );
+                    else setDiscountMessage( null );
+                    setRequireValidation( false );
+                } else {
+                    setButtonText( button.retry );
+                    setDisplayMessage( status.server_error );
+                }
             } );
     }
-
-    async function handleValidation() {
-        if ( userEmail == '' || userName == '' ) {
-            setDisplayMessage( statusMessage.error_no_input );
-            return;
-        }
-        if ( !validateEmail( userEmail ) ) {
-            setDisplayMessage( statusMessage.invalid_email );
-            return;
-        }
-        var usrdata = {
-            user_mail: userEmail,
-            user_name: userName,
-            user_ip: userIP
-        };
-        await userAjax( "verify_user", usrdata );
-        setDisplayMessage( null );
-        setButtonText( <Loading width={24} /> );
-    }
-
-    function getIP() {
-        fetch( 'https://api.ipify.org/?format=json' )
-            .then( res => res.json() )
-            .then( ip => setUserIP( ip.ip ) );
-    }
-
-    useEffect( () => {
-        var body, xhr;
-        userIP ? (
-            body = JSON.stringify( {action: "page_view", data: {user_ip: userIP}} ),
-            xhr = new XMLHttpRequest(),
-            xhr.open( "POST", API_URL + "evento2024/integration/" ),
-            xhr.setRequestHeader( "Content-type", "application/json" ),
-            xhr.send( body )
-        ) : getIP();
-    }, [userIP] );
-
-    useEffect( () => {
-        if ( requireValidation && ajaxResponse ) {
-            log( ajaxResponse );
-            setValidDiscount( ajaxResponse.discount_elegible );
-            if ( ajaxResponse.valid_member ) setDiscountMessage( "Desconto Palmilhando®" );
-            else if ( ajaxResponse.valid_atendee ) setDiscountMessage( "Desconto Participante 2023" );
-            else setDiscountMessage( null );
-            log( "Verification complete.", "success" );
-            setRequireValidation( false );
-        }
-        setButtonText( "ENVIAR" );
-    }, [ajaxResponse] );
 
     useEffect( () => {
         const handleClickOutside = e => !messageRef.current?.contains( e.target ) && setShowDiscountInfo( false );
@@ -131,7 +103,7 @@ function EventoIngressos( {online = false} ) {
         <div>
             <h2 className='grad-text font-bold mb-2 relative text-center text-2xl'>GARANTA SUA PARTICIPAÇÃO</h2>
             <div className='relative z-30 my-8'>
-                <Grid className={( online ? 'grid-cols-1' : 'grid-cols-2' ) + ' max-[820px]:!grid-cols-1 w-max gap-4 mx-auto'}>
+                <Grid className={( online ? 'grid-cols-1' : 'grid-cols-2' ) + ' max-[820px]:!grid-cols-1 w-max max-[820px]:!w-full gap-4 mx-auto'}>
 
                     {online && <Container id="online" className='w-full max-w-96 justify-self-center relative'>
                         <div className="flex flex-col items-center p-4 border-t-2 border-sky-600 rounded-2xl bg-sky-900 shadow-lg h-max w-full relative">

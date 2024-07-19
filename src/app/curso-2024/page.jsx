@@ -4,6 +4,7 @@ import {Button, List} from '@/lib/modules/ui-components';
 import Carousel from '@/lib/modules/carousel';
 import React from 'react';
 import '$/css/carousel.css';
+import '$/css/curso.css';
 
 export default function Page() {
     const $ = (el) => document.querySelector(el);

@@ -4,8 +4,9 @@ import {Section, Content, ContentDefault, Container, Wrapper, Loading, Grid} fro
 import {Collapsible} from '@/lib/modules/ui-components';
 import {EventoIngressos} from '@/lib/modules/ticket-purchase';
 import {useEffect, useRef, useMemo, useState} from 'react';
-import {scrollToTop} from '@/lib/modules/utils';
+import {pageView, scrollToTop} from '@/lib/modules/utils';
 import '$/css/carousel.css';
+import '$/css/evento.css';
 
 export default function Main() {
 
@@ -82,6 +83,7 @@ export default function Main() {
         let vw = () => setViewportWidth( window.visualViewport.width );
         vw();
         window.visualViewport.addEventListener( 'resize', vw );
+        pageView();
         return () => window.visualViewport.removeEventListener( 'resize', vw );
     }, [] );
 

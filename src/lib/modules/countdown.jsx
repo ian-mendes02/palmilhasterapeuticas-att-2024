@@ -20,7 +20,7 @@ export default function Countdown( {paused = false} ) {
         return () => clearInterval( t );
     }, [] );
 
-    return <div id='countdown' className='fixed top-0 w-full max-[820px]:!h-32 h-20 bg-[var(--cor-4)] flex items-center border-b-2 border-sky-800 rounded-bl-3xl rounded-br-3xl z-50 slide-down overflow-hidden'>
+    return <div id='countdown' className='fixed top-0 w-full h-20 bg-[var(--cor-4)] flex items-center border-b-2 border-sky-800 rounded-bl-3xl rounded-br-3xl z-50 slide-down overflow-hidden'>
         {!paused
             ? <Grid className='justify-center items-center m-auto grid-cols-2 max-[820px]:!grid-cols-1 h-full gap-1'>
                 <span className='text-center mx-4'>
