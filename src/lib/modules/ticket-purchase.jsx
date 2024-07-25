@@ -34,11 +34,11 @@ function EventoIngressos( {online = false} ) {
             }
         }
         , link = {
-            vip: 'https://secure.doppus.com/pay/PBOJJ9ZMBOJJ9ZG9Z3555',
-            online: 'https://secure.doppus.com/pay/PBOJJ9ZMBOJJ9ZG9Z3O55',
+            //vip: 'https://secure.doppus.com/pay/PBOJJ9ZMBOJJ9ZG9Z3555',
+            online: 'https://palmilhando.carrinho.app/one-checkout/ocmtb/17279337',
             presencial: {
-                discount: 'https://secure.doppus.com/pay/PBOJJ9ZMBOJJ9ZG9ZH000',
-                base: 'https://secure.doppus.com/pay/PBOJJ9ZMBOJJ9ZG9Z355J'
+                discount: 'https://palmilhando.carrinho.app/one-checkout/ocmtb/17279205',
+                base: 'https://palmilhando.carrinho.app/one-checkout/ocmtb/17279028'
             }
         }
         , button = {

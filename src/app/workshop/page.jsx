@@ -56,7 +56,8 @@ export default function Main() {
                     if ( res?.ok ) {
                         setSubmitButton( button.success );
                         setStatusMessage( status.success );
-                    } else if ( !res?.ok && res?.reason == 'user exists' ) {
+                        location.href = '/workshop/obrigado/';
+                    } else if ( !res?.ok && res?.reason == 'existing user' ) {
                         setSubmitButton( button.retry );
                         setStatusMessage( status.user_exists );
                     } else {
@@ -86,7 +87,7 @@ export default function Main() {
                 <Content className='relative z-10'>
                     <ContentDefault>
 
-                        <Container id='workshop-signup' className='w-full max-w-[720px] max-[820px]:items-center max-[820px]:text-center'>
+                        <Container id='workshop-signup' className='w-full max-w-[720px] max-[820px]:!items-center max-[820px]:!text-center'>
                             <span className='inline-flex items-end text-xl font-bold mb-4 text-[#1678ab]'>
                                 <span className='w-8 h-8 palmilhando-logo'></span>
                                 <span>Palmilhando® oferece:</span>

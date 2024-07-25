@@ -317,6 +317,35 @@ export default function Main() {
                                     >
                                         <p className='text-sm' style={{lineHeight: '24px'}}>Fisioterapeuta, especialista em Fisioterapia Ortopédica, MBA em gestão empresarial. Sócio fundador da Podoshop e do Palmilhando.</p>
                                     </Palestrante>
+                                    <Palestrante
+                                        src={ASSET_PREFIX + 'img/palestrantes-2024/leandro_fukusawa.webp'}
+                                        name='Leandro Fukusawa'
+                                        occupation='Fisioterapeuta'
+                                        theme='Fatores psicossociais nas lesões de tornozelo e pé'
+                                    >
+                                        <p className='text-sm' style={{lineHeight: '24px'}}>
+                                            Graduado pela Centro Universitário São Camilo
+                                            Especialização e Aprimoramento pela Santa Casa de São Paulo
+                                            Mestre pela UNICID
+                                            Doutorando em Ciências da Saúde pela Santa Casa de São Paulo
+                                            Sócio-Fundador do Grupo Superador
+                                            Diretor de Produto do Portal Fisioemortopedia.
+                                        </p>
+                                    </Palestrante>
+                                    <Palestrante
+                                        src={ASSET_PREFIX + 'img/palestrantes-2024/juliana_azevedo.webp'}
+                                        name='Juliana Azevedo'
+                                        occupation=''
+                                        theme='Ortoplastia como recurso para o cuidado dos pés'
+                                    >
+                                        <p className='text-sm' style={{lineHeight: '24px'}}>
+                                            Doutoranda e Mestre pela Escola Paulista de Medicina - UNIFESP,
+                                            Master em Podologia Pediatrica pela Universidade de Barcelona - UB,
+                                            Especialista em Biomecânica pela Universidade Estadual do Amazonas - UEA,
+                                            Enfermeira Podiatra do Comitê Paralímpico Brasileiro - CPB,
+                                            Co-autora do primeiro Manual de Podiatria do Brasil.
+                                        </p>
+                                    </Palestrante>
                                 </Grid>
                             </Container>
 
