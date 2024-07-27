@@ -1,7 +1,7 @@
 "use client";
 import {useState, useEffect} from 'react';
 import {Section, Content, ContentDefault, Container, Loading} from '@/lib/modules/layout-components';
-import {pageView} from '@/lib/modules/utils';
+import { page, pageView } from '@/lib/modules/page-load';
 import '$/css/workshop.css';
 
 export default function Main() {
@@ -23,11 +23,11 @@ export default function Main() {
             success: 'Obrigado! Enviaremos um e-mail em breve para confirmar sua inscrição.'
         };
 
-    useEffect( () => {
-        !function( e, t, a, n, g ) {e[n] = e[n] || [], e[n].push( {"gtm.start": ( new Date ).getTime(), event: "gtm.js"} ); var m = t.getElementsByTagName( a )[0], r = t.createElement( a ); r.async = !0, r.src = "https://www.googletagmanager.com/gtm.js?id=GTM-5TTGRP4", m.parentNode.insertBefore( r, m );}( window, document, "script", "dataLayer" );
-        document.title = 'Mini-curso Gratuito: Estratégias para o manejo de dores crônicas nos pés';
-        pageView();
-    }, [] );
+        useEffect( () => {
+            page( 'Mini-curso Gratuito: Estratégias para o manejo de dores crônicas nos pés' );
+            pageView();
+            setPageLoading( false );
+        }, [] );
 
     useEffect( () => {
         setStatusMessage( null );

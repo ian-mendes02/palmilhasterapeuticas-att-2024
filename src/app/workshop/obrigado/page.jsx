@@ -1,11 +1,9 @@
 "use client";
 import {Section, Content, ContentDefault, Container} from '@/lib/modules/layout-components';
 import {useEffect} from 'react';
+import { page } from '@/lib/modules/page-load';
 export default function Main() {
-    useEffect( () => {
-        !function( e, t, a, n, g ) {e[n] = e[n] || [], e[n].push( {"gtm.start": ( new Date ).getTime(), event: "gtm.js"} ); var m = t.getElementsByTagName( a )[0], r = t.createElement( a ); r.async = !0, r.src = "https://www.googletagmanager.com/gtm.js?id=GTM-5TTGRP4", m.parentNode.insertBefore( r, m );}( window, document, "script", "dataLayer" );
-        document.title = 'Obrigado | Mini-curso Gratuito: Estratégias para o manejo de dores crônicas nos pés';
-    }, [] );
+    useEffect( () => page('Obrigado | Mini-curso Gratuito: Estratégias para o manejo de dores crônicas nos pés'), [] );
     return (
         <main>
             <Section>
@@ -22,7 +20,7 @@ export default function Main() {
                                 href='https://chat.whatsapp.com/EugnKFN257kIRSmwvjAkkH'
                                 id='workshop-whatsapp'
                                 className='bg-[#46c15c] rounded-full hover:brightness-75 duration-100 ease-out py-2 px-4 w-max font-semibold my-4 max-[820px]:!w-full text-center'>
-                                <i className='fa-brands fa-whatsapp mr-2'></i>
+                                <i className='fa-brands fa-whatsapp mr-2' aria-hidden></i>
                                 ENTRAR NO GRUPO
                             </a>
                         </Container>
