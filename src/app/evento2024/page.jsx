@@ -8,6 +8,8 @@ import {useEffect, useRef, useState} from 'react';
 import Countdown from '@/lib/modules/countdown';
 import '$/css/carousel.css';
 import '$/css/evento.css';
+import {Listener, useListener} from '@/lib/modules/utils';
+
 export default function Main() {
 
     const [pageLoading, setPageLoading] = useState( true )
@@ -71,6 +73,15 @@ export default function Main() {
                                         <img src={ASSET_PREFIX + 'img/svg/map_pin.svg'} alt='' draggable='false' className='w-[40%]' />
                                     </div>
                                     <h2 className='font-light text-base'>Mercure São José dos Campos</h2>
+                                </Wrapper>
+                                <Wrapper className="items-center flex-nowrap w-max m-2">
+                                    <div className='w-8 h-8 mr-4 bg-[var(--cor-1)] rounded-full flex items-center justify-center shadow-md'>
+                                        <i className="fa-solid fa-video" aria-hidden="true"></i>
+                                    </div>
+                                    <h2 className='font-extralight text-base text-left'>
+                                        <strong>Evento com transmissão AO VIVO</strong><br />
+                                        Via Zoom
+                                    </h2>
                                 </Wrapper>
                             </Wrapper>
                             <Checkout />
@@ -159,7 +170,7 @@ export default function Main() {
                 {modalActive && <Fullscreen content={fullscreenContent} containerRef={containerRef} contentRef={contentRef} onClick={() => setFullscreenContent( null )} />}
             </Section>
 
-            <EventoIngressos online={false} />
+            <EventoIngressos />
 
             <Section id='faq'>
                 <Content>
@@ -180,15 +191,16 @@ export default function Main() {
                             <Collapsible title='Onde será o evento?'>
                                 <p>
                                     O evento será realizado no Hotel Mercure São José dos Campos, na torre II.
+                                    Endereço: Avenida Dr - Av. Jorge Zarur, 81 - Torre II - Jardim Apolo, São José dos Campos - SP, 12243-081.
                                     <br /><br />
-                                    Endereço: Avenida Dr - Av. Jorge Zarur, 81 - Torre II - Jardim Apolo, São José dos Campos - SP, 12243-081
+                                    O evento tabém será transmitido ao vivo via Zoom.
                                 </p>
                             </Collapsible>
                             <Collapsible title='Para quem é o evento?'>
                                 <p>Para profissionais da saúde que desejam ter uma experiência incrível e ter acesso a todo o conhecimento necessário para se destacar como profissional.</p>
                             </Collapsible>
                             <Collapsible title='Como recebo meu ingresso?'>
-                                <p>O ingresso será enviado para o seu e-mail. Será necessário que você mostre seu ingresso na entrada do evento. Por isso, no momento da compra, informe um e-mail ao qual você tenha acesso. Você poderá apresentar o seu ingresso de forma impressa ou digital, por meio de um print.</p>
+                                <p>O ingresso será enviado para o seu e-mail. Para os participantes do evento presencial, será necessário que mostrar o ingresso na entrada. Por isso, no momento da compra, informe um e-mail ao qual você tenha acesso. Você poderá apresentar o seu ingresso de forma impressa ou digital, por meio de um print.</p>
                             </Collapsible>
                             <Checkout />
                         </Container>

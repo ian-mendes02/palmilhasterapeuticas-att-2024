@@ -1,71 +1,44 @@
-var Utils = require( './utils' );
+export const DEV = process.env.NEXT_PUBLIC_DEV_ENV === 'true';
 
-Utils.list = ( ...classes ) => classes.join( ' ' ).trim();
+export const list = ( ...classes ) => classes.join( ' ' ).trim();
 
-Utils.prefix = ( prefix, classes ) => {
+export const url = str => `url('/${str || 'placeholder.webp'}')`;
+
+export function prefix( prefix, classes ) {
     var cls = classes.split( ' ' );
     for ( let i = 0; i < cls.length; i++ ) cls[i] = prefix + cls[i];
     return cls.join( ' ' ).trim();
 };
 
-Utils.url = ( str ) => `url('/${str || 'placeholder.webp'}')`;
-
-Utils.scrollToCenter = ( el ) => {
-    var n = typeof el === 'string' ? document.querySelector( el ) : el;
-    n?.scrollIntoView( {block: 'center', behavior: 'smooth'} );
+export function log( msg, type = 'default' ) {
+    DEV && {
+        warning: () => console.warn( msg ),
+        success: () => console.log( `%c☑ - ${msg}`, "color: #B0C4DE" ),
+        default: () => console.log( msg ),
+        error: () => console.error( msg ),
+        info: () => console.log( `%c⚠ - ${msg}`, "color: #F0E68C" ),
+    }[type]();
 };
 
-Utils.scrollToTop = ( el ) => {
-    var n = typeof el === 'string' ? document.querySelector( el ) : el;
-    n?.scrollIntoView( {block: 'start', behavior: 'smooth'} );
-};
+export function useListener( target, event, callback, options = {} ) {
+    return [
+        () => target.addEventListener( event, callback, options ),
+        () => target.removeEventListener( event, callback, options )
+    ];
+}
 
-Utils.log = ( msg, debug = process.env.NEXT_PUBLIC_DEV_ENV === 'true', type ) => {
-    if ( debug ) {
-        if ( typeof msg != 'string' )
-            return console.log( msg );
-        else switch ( type ) {
-            case "success":
-                return console.log( `%c☑ - ${msg}`, "color: #B0C4DE" );
-            case "info":
-                return console.log( `%c⚠ - ${msg}`, "color: #F0E68C" );
-            case "error":
-                return console.error( msg );
-            case "warning":
-                return console.warn( msg );
-            default:
-                return console.log( msg );
-        }
-    }
-};
+export function effectListener( target, event, callback, options = {} ) {
+    let [attach, remove] = useListener( target, event, callback, options = {} );
+    attach();
+    return remove;
+}
 
-Utils.getIp = async function() {
-    var req = await fetch( "https://api.ipify.org?format=json" ),
-        res = await req.json();
-    return res.ip;
-};
+export function useTimeout( callback, timeout ) {
+    let fn = setTimeout( callback, timeout );
+    return () => clearTimeout( fn );
+}
 
-Utils.post = async function( url, data ) {
-    var req = await fetch( url, {
-        headers: {"Content-Type": "application/json"},
-        method: 'post',
-        body: JSON.stringify( data )
-    } );
-    return await req.json();
-};
-
-Utils.pageView = function() {
-    fetch( 'https://api.ipify.org/?format=json' )
-        .then( res => res.json() )
-        .then( res => fetch( process.env.NEXT_PUBLIC_API, {
-            headers: {"Content-Type": "application/json"},
-            method: "post",
-            body: JSON.stringify( {
-                action: "page_view",
-                data: {
-                    ip: res.ip,
-                    origin: window.location.href
-                }
-            } )
-        } ) );
-};
+export function useInterval( callback, interval ) {
+    let fn = setInterval( callback, interval );
+    return () => clearInterval( fn );
+}

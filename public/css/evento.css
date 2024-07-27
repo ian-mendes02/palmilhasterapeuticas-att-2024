@@ -9,9 +9,10 @@
     height: 100%;
     opacity: .25;
     background-image: url(../img/evento-zoom.webp);
+    transform: scaleX(-1);
     background-size: cover;
     background-position: center;
-    -webkit-mask-image: linear-gradient(to right, black, transparent)
+    -webkit-mask-image: linear-gradient(to right, black, transparent 75%)
 }
 
 #evt-valor::before {
