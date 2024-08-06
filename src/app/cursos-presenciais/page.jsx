@@ -223,7 +223,7 @@ export default function Page() {
                                 <a href={LINKS.whatsapp} target="_blank" referrerPolicy='noopener noreferrer'
                                     className='m-2 bg-[linear-gradient(45deg,#0474a4,#0986bf)] rounded-full py-2 px-4 shadow-lg w-max text-xl font-semibold border-b-4 border-t border-b-slate-700 border-t-sky-200'
                                 >GARANTIR MINHA VAGA</a>
-                                <Img src='/img/pagamento.webp' className='w-1/2 opacity-30 mt-8' />
+                                {/* <Img src='/img/pagamento.webp' className='w-1/2 opacity-30 mt-8' /> */}
                                 <br />
                             </div>
                         </Container>
@@ -264,7 +264,7 @@ export default function Page() {
                                 <a href={LINKS.mentorias} target="_blank" referrerPolicy='noopener noreferrer'
                                     className='m-2 bg-[linear-gradient(45deg,#0474a4,#0986bf)] rounded-full py-2 px-4 shadow-lg w-max text-xl font-semibold border-b-4 border-t border-b-slate-700 border-t-sky-200'
                                 >QUERO AGENDAR AGORA</a>
-                                <Img src='/img/pagamento.webp' className='w-1/2 opacity-30 mt-8' />
+                                {/* <Img src='/img/pagamento.webp' className='w-1/2 opacity-30 mt-8' /> */}
                                 <br />
                             </div>
                         </Container>
