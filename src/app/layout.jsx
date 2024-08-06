@@ -1,6 +1,6 @@
+import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import {Poppins} from 'next/font/google';
 import '$/css/globals.css';
-import "tw-elements-react/dist/css/tw-elements-react.min.css";
 const poppins = Poppins({
     weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
     subsets: ['latin'],

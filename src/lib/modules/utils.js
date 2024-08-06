@@ -1,8 +1,15 @@
-export const DEV = process.env.NEXT_PUBLIC_DEV_ENV === 'true';
+import {DEV, ASSET_PREFIX} from './constants';
 
 export const list = ( ...classes ) => classes.join( ' ' ).trim();
 
 export const url = str => `url('/${str || 'placeholder.webp'}')`;
+
+export function source( url ) {
+    if ( typeof url === 'string' ) {
+        !url.startsWith( '/' ) && ( url = '/' + url );
+        return !url.startsWith( ASSET_PREFIX ) ? ASSET_PREFIX + url : url;
+    }
+}
 
 export function prefix( prefix, classes ) {
     var cls = classes.split( ' ' );

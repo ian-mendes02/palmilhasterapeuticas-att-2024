@@ -1,7 +1,7 @@
 import {Section, Content, ContentDefault, Grid, Container} from './layout-components';
 import {Loading} from './layout-components';
 import {scroll_to} from './page-load';
-import {ASSET_PREFIX} from './page-load';
+import {ASSET_PREFIX} from '@/lib/modules/constants';
 
 export const VideoEvento = (
     <iframe

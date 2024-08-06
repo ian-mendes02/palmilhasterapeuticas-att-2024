@@ -1,9 +1,10 @@
 'use client';
 import {VideoEvento, Fullscreen, Palestrantes, Checkout, toggleFulscreen, Footer, Banner} from '@/lib/modules/evento-shared';
 import {Section, Content, ContentDefault, Container, Wrapper, Loading} from '@/lib/modules/layout-components';
-import {pageView, page, viewportListener, ASSET_PREFIX, scroll_to} from '@/lib/modules/page-load';
+import {pageView, page, viewportListener, scroll_to} from '@/lib/modules/page-load';
 import {EventoIngressos} from '@/lib/modules/ticket-purchase';
 import {Collapsible} from '@/lib/modules/ui-components';
+import {ASSET_PREFIX} from '@/lib/modules/constants';
 import {useEffect, useRef, useState} from 'react';
 import Countdown from '@/lib/modules/countdown';
 import '$/css/carousel.css';

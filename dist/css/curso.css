@@ -1,4 +1,4 @@
-#cp-conteudo::before {
+/* #cp-conteudo::before {
     content: '';
     position: absolute;
     top: 0;
@@ -29,9 +29,9 @@
     background-repeat: no-repeat;
     background-size: 15%;
     border-radius: 100%;
-}
+} */
 
-#cp-header::before {
+/* #cp-header::before {
     content: '';
     display: block;
     width: 100%;
@@ -41,7 +41,7 @@
     background-position: top right;
     background-size: cover;
     -webkit-mask-image: linear-gradient(black, transparent)
-}
+} */
 
 #cp-sobre::before {
     content: '';
@@ -57,6 +57,10 @@
     background-repeat: no-repeat;
 }
 
+#cp-investimento::before {
+    -webkit-mask-image: linear-gradient(black, transparent 50%)
+}
+
 @media screen and (max-width:820px) {
     #cp-sobre:before {
         background-position: 100% 0;
@@ -68,9 +72,4 @@
         top: 0;
         width: 100vw;
     }
-
-    #cp-header::before {
-        filter: blur(15px) brightness(60%);
-    }
-
 }

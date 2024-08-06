@@ -1,4 +1,5 @@
-export const ASSET_PREFIX = process.env.NEXT_PUBLIC_ASSET_PREFIX;
+import { useEffect } from 'react';
+import { useListener } from './utils';
 
 export async function getIp() {
     return await fetch( "https://api.ipify.org?format=json" )
@@ -41,6 +42,19 @@ export function viewportListener( setIsMobile ) {
         listener.remove = () => viewport.removeEventListener( 'resize', vw );
     }
     return listener;
+}
+
+export function useViewportListener( setIsMobile ) {
+    useEffect( () => {
+        const viewport = window.visualViewport;
+        if ( viewport ) {
+            const vw = () => setIsMobile( viewport.width <= 820 );
+            const [attach, remove] = useListener( viewport, 'resize', vw );
+            vw();
+            attach();
+            return remove;
+        }
+    }, [setIsMobile] );
 }
 
 export function page( title = 'Document' ) {
