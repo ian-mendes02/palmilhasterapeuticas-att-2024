@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
-import { useListener } from './utils';
+import {useEffect} from 'react';
+import {useListener} from './utils';
+import {API_URL} from './constants';
 
 export async function getIp() {
     return await fetch( "https://api.ipify.org?format=json" )
@@ -16,10 +17,23 @@ export async function post( url, data ) {
         .then( res => res.json() );
 };
 
+export async function registerLead( email ) {
+    return await fetch( API_URL, {
+        headers: {"Content-Type": "application/json"},
+        method: "post",
+        body: JSON.stringify( {
+            action: "register_lead",
+            data: {
+                email: email
+            }
+        } )
+    } ).then( res => res.json() );
+}
+
 export function pageView() {
     fetch( 'https://api.ipify.org/?format=json' )
         .then( res => res.json() )
-        .then( res => fetch( process.env.NEXT_PUBLIC_API, {
+        .then( res => fetch( API_URL, {
             headers: {"Content-Type": "application/json"},
             method: "post",
             body: JSON.stringify( {

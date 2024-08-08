@@ -1,7 +1,7 @@
 "use client";
 import {useState, useEffect} from 'react';
 import {Section, Content, ContentDefault, Container, Loading} from '@/lib/modules/layout-components';
-import { page, pageView } from '@/lib/modules/page-load';
+import {page, pageView, registerLead} from '@/lib/modules/page-load';
 import '$/css/workshop.css';
 
 export default function Main() {
@@ -20,14 +20,14 @@ export default function Main() {
             server_error: 'Falha na comunicação com o servidor, tente novamente.',
             no_email: 'O campo "e-mail" não pode ficar em branco.',
             user_exists: 'Esse email já está cadastrado.',
-            success: 'Obrigado! Enviaremos um e-mail em breve para confirmar sua inscrição.'
+            success: 'Obrigado! Fique ligado para receber notícias.'
         };
 
-        useEffect( () => {
-            page( 'Mini-curso Gratuito: Estratégias para o manejo de dores crônicas nos pés' );
-            pageView();
-            setPageLoading( false );
-        }, [] );
+    useEffect( () => {
+        page( 'Mini-curso Gratuito: Estratégias para o manejo de dores crônicas nos pés' );
+        pageView();
+        setPageLoading( false );
+    }, [] );
 
     useEffect( () => {
         setStatusMessage( null );
@@ -36,40 +36,27 @@ export default function Main() {
 
     function registerEmail() {
         setStatusMessage( null );
-        var apiUrl = process.env.NEXT_PUBLIC_API
-            , data = {
-                action: 'workshop_register',
-                data: {email: userEmail}
-            };
         if ( userEmail == '' ) {
             setStatusMessage( status.no_email );
             return;
         } else {
             setSubmitButton( button.loading );
-            fetch( apiUrl, {
-                method: 'post',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify( data )
-            } )
-                .then( res => res.json() )
-                .then( res => {
-                    if ( res?.ok ) {
-                        setSubmitButton( button.success );
-                        setStatusMessage( status.success );
-                        location.href = '/workshop/obrigado/';
-                    } else if ( !res?.ok && res?.reason == 'existing user' ) {
-                        setSubmitButton( button.retry );
-                        setStatusMessage( status.user_exists );
-                    } else {
-                        setStatusMessage( status.server_error );
-                        setSubmitButton( button.retry );
-                    }
-                } )
-                .catch( err => {
-                    console.log( err );
+            registerLead( userEmail ).then( res => {
+                if ( res?.ok ) {
+                    setSubmitButton( button.success );
+                    setStatusMessage( status.success );
+                } else if ( !res?.ok && res?.reason == 'existing user' ) {
+                    setSubmitButton( button.retry );
+                    setStatusMessage( status.user_exists );
+                } else {
                     setStatusMessage( status.server_error );
                     setSubmitButton( button.retry );
-                } );
+                }
+            } ).catch( err => {
+                console.log( err );
+                setStatusMessage( status.server_error );
+                setSubmitButton( button.retry );
+            } );
         }
     }
 
@@ -83,21 +70,20 @@ export default function Main() {
                 </div>
             )}
 
-            <Section id='workshop-header' className='bg-[linear-gradient(90deg,#ffffff,#dedede)] shadow-lg'>
+            <Section id='workshop-header' className='bg-[linear-gradient(90deg,#ffffff,#dedede)] shadow-lg py-32'>
                 <Content className='relative z-10'>
                     <ContentDefault>
 
                         <Container id='workshop-signup' className='w-full max-w-[720px] max-[820px]:!items-center max-[820px]:!text-center'>
                             <span className='inline-flex items-end text-xl font-bold mb-4 text-[#1678ab]'>
                                 <span className='w-8 h-8 palmilhando-logo'></span>
-                                <span>Palmilhando® oferece:</span>
+                                <span>Palmilhando®</span>
                             </span>
-                            <h1 className='font-bold text-3xl mb-8 text-[#1678ab]'>Mini-curso Gratuito: Estratégias para o manejo de dores crônicas nos pés</h1>
-                            <p className='text-[#1678ab] w-3/4'>Descubra como utilizar as palmilhas terapêuticas como uma estratégia eficaz.</p>
-                            <h2 className='font-bold mt-8 text-[#1678ab]'>Dia 03 de agosto, às 9h, no YouTube - curso 100% online e gratuito</h2>
+                            <h1 className='font-bold text-3xl mb-8 text-[#1678ab]'>Poxa! Esse evento já passou.</h1>
+                            <p className='text-[#1678ab] w-3/4'>Inscreva-se para não perder nossos próximos eventos.</p>
                             <Container id='workshop-signup-form' className='w-3/4 my-4 max-[820px]:w-full'>
                                 <input type='email' placeholder='Seu melhor e-mail' className='rounded-full outline-none bg-white py-2 px-4 text-xl border-4 border-[color:#1678ab] mb-4 text-[#296D7F]' defaultValue='' onInput={e => setUserEmail( e.target.value )} />
-                                <div className='w-full rounded-full font-bold text-xl text-center py-3 px-4 bg-[#1678ab] hover:brightness-90 duration-100 ease-out cursor-pointer shadow-sm' onClick={registerEmail}>{submitButton}</div>
+                                <div className='w-full rounded-full font-bold text-xl text-center py-3 px-4 bg-[#1678ab] hover:brightness-90 duration-100 ease-out cursor-pointer shadow-lg' onClick={registerEmail}>{submitButton}</div>
                                 {statusMessage && <p className='max-[820px]:!text-center text-sm my-4 text-[#1678ab]'>{statusMessage}</p>}
                             </Container>
                         </Container>
@@ -106,7 +92,7 @@ export default function Main() {
                 </Content>
             </Section>
 
-            <Section id='workshop-includes'>
+            {/* <Section id='workshop-includes'>
                 <Content>
                     <ContentDefault className='flex flex-col items-center'>
                         <h1 className='font-bold text-3xl text-center'>Neste mini curso, você terá a oportunidade de:</h1>
@@ -161,7 +147,7 @@ export default function Main() {
                         </Container>
                     </ContentDefault>
                 </Content>
-            </Section>
+            </Section> */}
 
             <Section id='workshop-footer' className='p-6'>
                 <span className='logo-palmilhando w-full h-6'></span>
