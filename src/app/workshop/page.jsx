@@ -41,11 +41,11 @@ export default function Main() {
             return;
         } else {
             setSubmitButton( button.loading );
-            registerLead( userEmail ).then( res => {
+            registerLead( userEmail ).then( res => {                
                 if ( res?.ok ) {
                     setSubmitButton( button.success );
                     setStatusMessage( status.success );
-                } else if ( !res?.ok && res?.reason == 'existing user' ) {
+                } else if ( !res?.ok && res?.data == 'existing user' ) {
                     setSubmitButton( button.retry );
                     setStatusMessage( status.user_exists );
                 } else {

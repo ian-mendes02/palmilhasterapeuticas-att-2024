@@ -13,8 +13,7 @@ export async function post( url, data ) {
         headers: {"Content-Type": "application/json"},
         method: 'post',
         body: JSON.stringify( data )
-    } )
-        .then( res => res.json() );
+    } ).then( res => res.json() );
 };
 
 export async function registerLead( email ) {
